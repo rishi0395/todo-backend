@@ -8,11 +8,23 @@ var Pusher = require('pusher');
 const projectRoutes = require('./routes/projectRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 
+// to access env files
+env.config();
+const {
+  PORT,
+  MONGO_DB_DATABASE,
+  MONGO_DB_PASSWORD,
+  MONGO_DB_USER,
+  MONGO_DB_UNIQUE_IDENTIFIER,
+  PUSHER_KEY,
+  PUSHER_SECRET
+} = process.env;
+
 const app = express();
 const pusher = new Pusher({
   appId: '1135618',
-  key: 'e239bd76b8f00ec6ca9b',
-  secret: '7028db3ec509962bbd3f',
+  key: PUSHER_KEY,
+  secret: PUSHER_SECRET,
   cluster: 'ap2',
   useTLS: true
 });
@@ -21,16 +33,6 @@ const pusher = new Pusher({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-
-// to access env files
-env.config();
-const {
-  PORT,
-  MONGO_DB_DATABASE,
-  MONGO_DB_PASSWORD,
-  MONGO_DB_USER,
-  MONGO_DB_UNIQUE_IDENTIFIER
-} = process.env;
 
 dbConnectionPath = `mongodb+srv://${MONGO_DB_USER}:${MONGO_DB_PASSWORD}@cluster0.${MONGO_DB_UNIQUE_IDENTIFIER}.mongodb.net/${MONGO_DB_DATABASE}?retryWrites=true&w=majority`;
 
